@@ -15,6 +15,7 @@ server.bind(ADDR)
 
 def handle_client(conn, addr):
     print(f"[NEW CONNECTION] {addr} connected.")
+    print("PoornaSree")
     connected = True
     while connected:
         msg_length = conn.recv(HEADER).decode(FORMAT)
@@ -24,7 +25,23 @@ def handle_client(conn, addr):
             if msg == DISCONNECT_MESSAGE:
                 connected = False
             print(f"[{addr}] {msg}")
+
         conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
+
+
+            print("I am Manasa")
+        conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
+
+        conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
+
+
+
+        conn.send(f"Thanks from server for your message: ({msg}".encode(FORMAT))
+#comment
+
+        conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
+
+
 
     conn.close()
 
@@ -38,4 +55,7 @@ def start():
         print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
 
 print("[STARTING] server is starting...")
+print("ssteja294")
 start()
+print("tharun")
+print("jayanth")
