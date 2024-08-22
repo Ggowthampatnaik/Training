@@ -24,8 +24,8 @@ def handle_client(conn, addr):
             if msg == DISCONNECT_MESSAGE:
                 connected = False
             print(f"[{addr}] {msg}")
-        conn.send(f“Thanks from server for your message: ({msg})“.encode(FORMAT))
-
+        conn.send(f"Thanks from server for your message: ({msg}".encode(FORMAT))
+#comment
     conn.close()
 
 def start():
@@ -39,3 +39,4 @@ def start():
 
 print("[STARTING] server is starting...")
 start()
+print("tharun")
