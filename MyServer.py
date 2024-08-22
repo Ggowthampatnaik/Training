@@ -9,7 +9,7 @@ print(socket.gethostname())
 ADDR = (SERVER, PORT)
 FORMAT = 'UTF-8'
 DISCONNECT_MESSAGE = "bye"
-
+# Hey im Teja, i have accessed the file
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
