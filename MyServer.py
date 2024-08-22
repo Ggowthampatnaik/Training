@@ -24,6 +24,7 @@ def handle_client(conn, addr):
             if msg == DISCONNECT_MESSAGE:
                 connected = False
             print(f"[{addr}] {msg}")
+            print("I am Manasa")
         conn.send(f“Thanks from server for your message: ({msg})“.encode(FORMAT))
 
     conn.close()
