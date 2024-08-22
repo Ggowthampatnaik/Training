@@ -9,7 +9,7 @@ print(socket.gethostname())
 ADDR = (SERVER, PORT)
 FORMAT = 'UTF-8'
 DISCONNECT_MESSAGE = "bye"
-
+# Hey im Teja, i have accessed the file
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
@@ -26,6 +26,9 @@ def handle_client(conn, addr):
                 connected = False
             print(f"[{addr}] {msg}")
 
+        conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
+
+
             print("I am Manasa")
         conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
 
@@ -37,6 +40,7 @@ def handle_client(conn, addr):
 #comment
 
         conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
+
 
 
     conn.close()
@@ -52,6 +56,7 @@ def start():
 
 print("[STARTING] server is starting...")
 print("ssteja294")
+print("Sri Teja1")
 start()
 print("tharun")
 print("jayanth")
