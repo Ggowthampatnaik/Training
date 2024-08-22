@@ -1,2 +1,1 @@
-print("Hello Man")
-print("Hi Gowtham Gandreti")
+print("Hello Gowtham GPP")
