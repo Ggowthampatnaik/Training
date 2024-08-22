@@ -1,2 +1,2 @@
 print("Hello Gowtham GPP")
-print("Are you fine?")
+print("Are you good?")
