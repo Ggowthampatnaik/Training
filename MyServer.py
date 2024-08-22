@@ -38,4 +38,5 @@ def start():
         print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
 
 print("[STARTING] server is starting...")
+print("Sai > Hii ")
 start()
