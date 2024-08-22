@@ -25,24 +25,8 @@ def handle_client(conn, addr):
             msg = conn.recv(msg_length).decode(FORMAT)
             if msg == DISCONNECT_MESSAGE:
                 connected = False
-            print(f"[{addr}] {msg}")
-
+            print(f"[{addr}] {msg}") 
         conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
-
-
-            print("I am Manasa")
-        conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
-
-        conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
-
-
-
-        conn.send(f"Thanks from server for your message: ({msg}".encode(FORMAT))
-#comment
-
-        conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
-
-
 
     conn.close()
 
@@ -57,11 +41,12 @@ def start():
 
 print("[STARTING] server is starting...")
 print("ssteja294")
+print("I am Manasa")
 print("Sri Teja1")
-start()
 print("tharun")
 print("jayanth")
 print("Naga Lakshmi G")
 print("Veeresh")
 print("Prem")
 print("Gowtham")
+start()
