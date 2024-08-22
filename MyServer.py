@@ -32,6 +32,13 @@ def handle_client(conn, addr):
         conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
 
 
+
+        conn.send(f"Thanks from server for your message: ({msg}".encode(FORMAT))
+#comment
+
+        conn.send(f"Thanks from server for your message: ({msg})".encode(FORMAT))
+
+
     conn.close()
 
 def start():
@@ -46,3 +53,5 @@ def start():
 print("[STARTING] server is starting...")
 print("ssteja294")
 start()
+print("tharun")
+print("jayanth")
