@@ -2,48 +2,48 @@
 
 import sqlite3
 
-def AddBook():
+def AddRecord():
 	global Fields, Messages
 	FieldValues = ()
 	for Field in Fields:
 		FieldValues = FieldValues + (input(f"Enter {Field}: "), )
 	PlaceHolders = ', '.join(['?'] * len(Fields))
 	FieldNames = ', '.join(Fields)
-	DbCursor.execute(f'INSERT INTO Records ({FieldNames}) VALUES ({PlaceHolders})', FieldValues)
+	DbCursor.execute(f'INSERT INTO RecordsTable ({FieldNames}) VALUES ({PlaceHolders})', FieldValues)
 	DbConnection.commit()
 	print(Messages[InputKey - 1])
 
-def PrintAllData():
-    Records = DbCursor.execute('SELECT * FROM Records')
+def PrintAllRecords():
+    Records = DbCursor.execute('SELECT * FROM RecordsTable')
     print(Fields)
     for Record in Records:
         print(Record)
     print(Messages[InputKey - 1])
 
-def SearchPrintData():
+def SearchPrintRecord():
     SearchID = GetSearchID("Search")
-    DbCursor.execute(f'SELECT * FROM Records WHERE {Fields[0]} = ?', (SearchID,))
+    DbCursor.execute(f'SELECT * FROM RecordsTable WHERE {ID} = ?', (SearchID,))
     Record = DbCursor.fetchone()
     print(Fields)
     if Record:
         print(f"{Record}")
     else:
-        print(f"{Fields[0]} not found.")
+        print(f"{ID} not found.")
     print(Messages[InputKey - 1])
 
-def UpdateBook():
+def UpdateRecord():
     SearchID = GetSearchID("Update")
-    for index, Field in enumerate(Fields):
-        print(f"{index}: {Field}")
+    for Index, Field in enumerate(Fields[1:], start = 1):
+        print(f"{Index}: {Field}")
     InputKey = int(input("Enter the number corresponding to the field you want to edit: "))
     NewValue = input(f"Enter New {Fields[InputKey]}: ")
-    DbCursor.execute(f'UPDATE Records SET {Fields[InputKey]} = ? WHERE {Fields[0]} = ?', (NewValue, SearchID))
+    DbCursor.execute(f'UPDATE RecordsTable SET {Fields[InputKey]} = ? WHERE {ID} = ?', (NewValue, SearchID))
     DbConnection.commit()
     print(Messages[InputKey - 1])
 
-def DeleteBook():
+def DeleteRecord():
     SearchID = GetSearchID("Delete")
-    DbCursor.execute(f'DELETE FROM Records WHERE {Fields[0]} = ?', (SearchID,))
+    DbCursor.execute(f'DELETE FROM RecordsTable WHERE {ID} = ?', (SearchID,))
     DbConnection.commit()
     print(Messages[InputKey - 1])
 
@@ -53,8 +53,8 @@ def Exit():
 
 def LoadConfig():
     global DbCursor, Menu, Fields, Messages, Keyword
-    ConfigRecords = DbCursor.execute('SELECT * FROM CongifFile').fetchall()
-    DbCursor.execute(f'PRAGMA table_info(Records)')
+    ConfigRecords = DbCursor.execute('SELECT * FROM ConfigTable').fetchall()
+    DbCursor.execute(f'PRAGMA table_info(RecordsTable)')
     Fields = [column[1] for column in DbCursor.fetchall()]
     Fields = tuple(Fields)
     for key, value in ConfigRecords:
@@ -62,16 +62,16 @@ def LoadConfig():
             Menu = eval(value)
         elif key == 'Keyword':
             Keyword = value
-        elif key == 'Messeges':
+        elif key == 'Messages':
             Messages = eval(value)
 
 def GetSearchID(Operation):
-    SearchID = input(f"Enter {Fields[0]} to {Operation}: ")
+    SearchID = input(f"Enter {ID} to {Operation}: ")
     return SearchID
 
 def ShowMenu():
     global InputKey
-    Functions = [AddBook, PrintAllData, SearchPrintData, UpdateBook, DeleteBook, Exit]
+    Functions = [AddRecord, PrintAllRecords, SearchPrintRecord, UpdateRecord, DeleteRecord, Exit]
     while True:
         for MenuItem in Menu:
             print(MenuItem)
@@ -91,7 +91,7 @@ Keyword = None
 InputKey = None
 SearchID = None
 
-DbConnection = sqlite3.connect('Framework.db')
+DbConnection = sqlite3.connect('Framework1.db')
 DbCursor = DbConnection.cursor()
 LoadConfig()
 ID = Fields[0]
