@@ -1,0 +1,43 @@
+SELECT CONCAT( 'At GMart in Vizag, we offer a selection of over ', 
+(SELECT COUNT(ItemID) FROM Item), ' unique items, with a current stock of ', 
+(SELECT SUM(StockQuantity) FROM Item), ' pieces in our warehouse. Our best-selling product is ', 
+(SELECT Description FROM Item WHERE ItemID = (SELECT ItemID FROM BillDetail GROUP BY ItemID ORDER BY SUM(SoldQuantity) DESC LIMIT 1) ), 
+' (', (SELECT ItemID FROM Item WHERE ItemID = (SELECT ItemID FROM BillDetail GROUP BY ItemID ORDER BY SUM(SoldQuantity) DESC LIMIT 1) ), 
+'), with total sales amounting to Rs.', 
+(SELECT SUM(BD.SoldQuantity * I.Price) FROM BillDetail BD JOIN Item I ON BD.ItemID = I.ItemID 
+WHERE BD.ItemID = (SELECT ItemID FROM BillDetail GROUP BY ItemID ORDER BY SUM(SoldQuantity) DESC LIMIT 1) ), 
+' from ', (SELECT SUM(BD.SoldQuantity) FROM BillDetail BD WHERE BD.ItemID = 
+(SELECT ItemID FROM BillDetail GROUP BY ItemID ORDER BY SUM(SoldQuantity) DESC LIMIT 1) ), 
+' units sold. Most profitable product is ', 
+(SELECT I.Description FROM Item I JOIN BillDetail BD ON I.ItemID = BD.ItemID GROUP BY I.Description ORDER BY SUM(BD.SoldQuantity * I.Price) 
+DESC LIMIT 1 ), 
+' (', (SELECT I.ItemID FROM Item I JOIN BillDetail BD ON I.ItemID = BD.ItemID GROUP BY I.ItemID ORDER BY SUM(BD.SoldQuantity * I.Price) 
+DESC LIMIT 1 ), '), with total sales amounting to Rs.', 
+(SELECT SUM(BD.SoldQuantity * I.Price) FROM Item I JOIN BillDetail BD ON I.ItemID = BD.ItemID WHERE I.ItemID = 
+(SELECT I.ItemID FROM Item I JOIN BillDetail BD ON I.ItemID = BD.ItemID GROUP BY I.ItemID ORDER BY SUM(BD.SoldQuantity * I.Price) DESC LIMIT 1)),
+' from ', (SELECT SUM(BD.SoldQuantity) FROM BillDetail BD WHERE BD.ItemID = 
+(SELECT ItemID FROM BillDetail GROUP BY ItemID ORDER BY SUM(SoldQuantity) DESC LIMIT 1) ), 
+' units sold. On the other hand, the least popular item is ', 
+(SELECT I.Description FROM Item I WHERE I.ItemID = (SELECT ItemID FROM BillDetail GROUP BY ItemID ORDER BY SUM(SoldQuantity) ASC LIMIT 1) ), 
+' with only ', (SELECT SUM(BD.SoldQuantity) FROM BillDetail BD WHERE BD.ItemID = (SELECT ItemID FROM BillDetail GROUP BY ItemID ORDER BY SUM(SoldQuantity) ASC LIMIT 1) ), 
+' units sold. Overall, we\'ve sold ', (SELECT SUM(SoldQuantity) FROM BillDetail), ' products, generating total sales of Rs.', 
+(SELECT SUM(BD.SoldQuantity * I.Price) FROM BillDetail BD JOIN Item I ON BD.ItemID = I.ItemID ), 
+'. The highest sales were recorded on ', 
+(SELECT BillDate FROM BillDetail BD JOIN BillHeader BH ON BD.BillNumber = BH.BillNumber GROUP BY BillDate ORDER BY SUM(BD.SoldQuantity) DESC LIMIT 1 ), 
+'. We serve a customer base of ', (SELECT COUNT(CustomerID) FROM Customer), ', with our most frequent customer being ', 
+(SELECT BH.CustomerID FROM BillHeader BH JOIN BillDetail BD ON BH.BillNumber = BD.BillNumber GROUP BY BH.CustomerID ORDER BY COUNT(BH.BillNumber) DESC LIMIT 1 ),
+'. We work with ', (SELECT COUNT(SupplierID) FROM Supplier), ' suppliers, and our top supplier, ', 
+(SELECT S.SupplierID FROM Supplier S JOIN Item I ON S.SupplierID = I.SupplierID GROUP BY S.SupplierID ORDER BY SUM(I.StockQuantity) DESC LIMIT 1 ), 
+', has delivered over ', (SELECT SUM(I.StockQuantity) FROM Item I JOIN Supplier S ON I.SupplierID = S.SupplierID WHERE S.SupplierID = 
+(SELECT S2.SupplierID FROM Supplier S2 JOIN Item I2 ON S2.SupplierID = I2.SupplierID GROUP BY S2.SupplierID ORDER BY SUM(I2.StockQuantity) DESC LIMIT 1) ),
+' units. Among our staff, ', (SELECT CashierName FROM Cashier GROUP BY CashierID ORDER BY COUNT(CashierID) DESC LIMIT 1 ), 
+' stands out for having worked the most hours.' ) AS Report;
+
+
+/* At GMart in Vizag, we offer a selection of over 6 unique items, with a current stock of 67 pieces in our warehouse. 
+Our best-selling product is Pencil (IT002), with total sales amounting to Rs. 50 from 10 units sold. 
+Most profitable product is Dairy (IT004), with total sales amounting to Rs.200 from 10 units sold. On the other hand, 
+the least popular item is Dairy with only 1 units sold. Overall, we've sold 30 products, generating total sales of Rs.474. 
+The highest sales were recorded on 2024-10-02. We serve a customer base of 5, with our most frequent customer being CU003. 
+We work with 4 suppliers, and our top supplier, SP003, has delivered over 35 units. Among our staff, 
+CS001 stands out for having worked the most hours. */
